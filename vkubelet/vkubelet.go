@@ -14,12 +14,10 @@ import (
 	"github.com/virtual-kubelet/virtual-kubelet/providers/aws"
 	"github.com/virtual-kubelet/virtual-kubelet/providers/azure"
 	"github.com/virtual-kubelet/virtual-kubelet/providers/azurebatch"
-	"github.com/virtual-kubelet/virtual-kubelet/providers/cri"
 	"github.com/virtual-kubelet/virtual-kubelet/providers/huawei"
 	"github.com/virtual-kubelet/virtual-kubelet/providers/hypersh"
 	"github.com/virtual-kubelet/virtual-kubelet/providers/mock"
 	"github.com/virtual-kubelet/virtual-kubelet/providers/sfmesh"
-	"github.com/virtual-kubelet/virtual-kubelet/providers/vic"
 	"github.com/virtual-kubelet/virtual-kubelet/providers/web"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
@@ -103,11 +101,6 @@ func New(nodeName, operatingSystem, namespace, kubeConfig, taint, provider, prov
 		if err != nil {
 			return nil, err
 		}
-	case "vic":
-		p, err = vic.NewVicProvider(providerConfig, rm, nodeName, operatingSystem)
-		if err != nil {
-			return nil, err
-		}
 	case "web":
 		p, err = web.NewBrokerProvider(nodeName, operatingSystem, daemonEndpointPort)
 		if err != nil {
@@ -115,11 +108,6 @@ func New(nodeName, operatingSystem, namespace, kubeConfig, taint, provider, prov
 		}
 	case "mock":
 		p, err = mock.NewMockProvider(providerConfig, nodeName, operatingSystem, internalIP, daemonEndpointPort)
-		if err != nil {
-			return nil, err
-		}
-	case "cri":
-		p, err = cri.NewCRIProvider(nodeName, operatingSystem, internalIP, rm, daemonEndpointPort)
 		if err != nil {
 			return nil, err
 		}
